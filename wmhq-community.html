@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WMHQ Community</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --red: #7b1d1d;
+      --red-light: rgba(123, 29, 29, 0.06);
+      --red-border: rgba(123, 29, 29, 0.2);
+      --bg: #f2f2f2;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.13);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1a1a;
+        --card-bg: #242424;
+        --text-primary: #f0f0f0;
+        --text-secondary: #a0a0a0;
+        --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+        --red-light: rgba(123, 29, 29, 0.12);
+        --red-border: rgba(123, 29, 29, 0.4);
+      }
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    @media (max-width: 640px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      body {
+        padding: 24px 16px;
+      }
+    }
+
+    /* Section */
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Header card */
+    .section-header {
+      background-color: var(--red);
+      border-radius: 10px 10px 0 0;
+      padding: 14px 20px;
+    }
+
+    .section-header h2 {
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Content card */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 0 0 12px 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+
+    .card-accent {
+      height: 4px;
+      background-color: var(--red);
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 22px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .badge-paid {
+      background-color: var(--red-light);
+      color: var(--red);
+      border: 1px solid var(--red-border);
+    }
+
+    .badge-free {
+      background-color: rgba(30, 90, 60, 0.07);
+      color: #1e5a3c;
+      border: 1px solid rgba(30, 90, 60, 0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .badge-free {
+        background-color: rgba(40, 120, 80, 0.15);
+        color: #4caf80;
+        border-color: rgba(40, 120, 80, 0.35);
+      }
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    /* Title */
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--text-primary);
+    }
+
+    /* Meta */
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .meta-row svg {
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    .meta-value {
+      color: var(--red);
+      font-weight: 600;
+    }
+
+    /* Description */
+    .description {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .divider {
+        background-color: rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    /* CTA area */
+    .cta {
+      padding-top: 2px;
+    }
+
+    /* Outline button */
+    .btn-outline {
+      display: inline-block;
+      padding: 10px 18px;
+      border: 2px solid var(--red);
+      border-radius: 7px;
+      color: var(--red);
+      background: transparent;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--red-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline:active {
+      transform: translateY(0);
+    }
+
+    /* Text CTA */
+    .text-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: default;
+      user-select: none;
+    }
+
+    .text-cta .arrow {
+      display: inline-flex;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .text-cta:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    .text-cta svg {
+      stroke: var(--red);
+    }
+  </style>
+</head>
+<body>
+  <main class="layout">
+
+    <!-- Section 1: Membership Call -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Upcoming WMHQ Membership Call</h2>
+      </div>
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <span class="badge badge-paid">
+            <span class="badge-dot"></span>
+            Paid Members
+          </span>
+
+          <h3>CEO Cash: Building Your Sales System</h3>
+
+          <div class="meta">
+            <div class="meta-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Date: <span class="meta-value">Thursday, April 3</span></span>
+            </div>
+            <div class="meta-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Time: <span class="meta-value">10:00 AM AEST</span></span>
+            </div>
+          </div>
+
+          <p class="description">Turn your audience attention into consistent revenue. We're fixing the gap between engagement and sales with your exact sales system.</p>
+
+          <div class="divider"></div>
+
+          <div class="cta">
+            <a href="https://www.womanmasteryhq.com?utm_source=kajabi-community&utm_medium=community&utm_campaign=wmhq-membership" class="btn-outline" target="_blank" rel="noopener noreferrer">Join WMHQ to Join Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Free Community Live -->
+    <div class="section">
+      <div class="section-header">
+        <h2>Upcoming Free Community Live</h2>
+      </div>
+      <div class="card">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <span class="badge badge-free">
+            <span class="badge-dot"></span>
+            Free Community
+          </span>
+
+          <h3>Visibility Without the Fear</h3>
+
+          <div class="meta">
+            <div class="meta-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Date: <span class="meta-value">Wednesday, May 7</span></span>
+            </div>
+            <div class="meta-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Time: <span class="meta-value">6:00 PM AEST</span></span>
+            </div>
+          </div>
+
+          <p class="description">Your first step into WMHQ. Show up bigger without feeling exposed. Real frameworks, no hype.</p>
+
+          <div class="divider"></div>
+
+          <div class="cta">
+            <span class="text-cta">
+              Click Meetups and register
+              <span class="arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="13 6 19 12 13 18"></polyline>
+                </svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>
